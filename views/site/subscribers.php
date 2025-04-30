@@ -4,12 +4,19 @@
             <a href="">Добавить абонента</a>
             <a href="">Прикрепить номер абоненту</a>
         </div>
-        <div class="buttons-right">
-            <p>Подсчет абонентов</p>
-            <a href="">По помещениям</a>
-            <a href="">По подразделениям</a>
-            <p>Количество: ?</p>
+        <div class="search">
+            <h4>Поиск</h4>
+            <form>
+                <label><input class="search-field" type="text"></label>
+                <button class="search-button">Найти</button>
+            </form>
         </div>
+    </div>
+    <div class="buttons-right">
+        <p>Подсчет абонентов</p>
+        <a href="">По помещениям</a>
+        <a href="">По подразделениям</a>
+        <p>Количество: ?</p>
     </div>
     <div class="data">
         <div class="column column-header">

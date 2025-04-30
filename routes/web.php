@@ -10,6 +10,9 @@ Route::add('GET', '/rooms', [Controller\Site::class, 'rooms'])->middleware('auth
 Route::add('GET', '/departments', [Controller\Site::class, 'departments'])->middleware('auth');
 Route::add('GET', '/users', [Controller\Site::class, 'users'])->middleware('auth');
 Route::add(['GET', 'POST'], '/create_user', [Controller\Site::class, 'create_user'])->middleware('auth', 'admin');
+Route::add(['GET', 'POST'], '/departments/create', [Controller\Site::class, 'create_department'])->middleware('auth');
+Route::add(['GET', 'POST'], '/department_types/create', [Controller\Site::class, 'create_department_type'])->middleware('auth');
+Route::add(['GET', 'POST'], '/room_types/create', [Controller\Site::class, 'create_room_type'])->middleware('auth');
 Route::add(['GET', 'POST'], '/signup', [Controller\Site::class, 'signup']);
 Route::add(['GET', 'POST'], '/login', [Controller\Site::class, 'login']);
 Route::add('GET', '/logout', [Controller\Site::class, 'logout']);

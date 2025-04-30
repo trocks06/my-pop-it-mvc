@@ -5,20 +5,21 @@ namespace Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Room extends Model
 {
     use HasFactory;
     protected $table = 'department';
     public $timestamps = false;
     protected $fillable = [
-        'department_name',
-        'department_type_id',
+        'room_name',
+        'department_id',
+        'room_type_id',
     ];
 
     protected static function booted()
     {
-        static::created(function ($department) {
-            $department->save();
+        static::created(function ($room) {
+            $room->save();
         });
     }
 

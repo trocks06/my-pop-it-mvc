@@ -1,4 +1,4 @@
-<h2>Создание пользователя</h2>
+<h2>Создание сисадмина</h2>
 <h3><?= $message ?? ''; ?></h3>
 <form method="post">
     <label>Фамилия <input type="text" name="last_name"></label>
@@ -15,5 +15,5 @@
             ?>
         </select>
     </label>
-    <button>Зарегистрироваться</button>
+    <button>Добавить сисадмина</button>
 </form>

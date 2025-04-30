@@ -19,7 +19,7 @@
         main { font-size: 32px; }
         .buttons { margin-top: 34px; display: flex; gap: 50px;justify-content: center}
         .buttons-left {display: flex; flex-direction: column; gap: 28px}
-        .buttons-right {display: flex; align-items: center; gap: 20px;}
+        .buttons-right {display: flex; align-items: center; gap: 20px; justify-content: center; margin-top: 34px}
         .buttons-left > a {text-align: center; width: 472px; border: black solid 2px; padding: 5px; background-color: darksalmon}
         .buttons-right > a {border: black solid 2px; padding: 5px; background-color: darksalmon}
         .data {margin-top: 34px; display: flex; flex-direction: column;}
@@ -30,6 +30,10 @@
         .date-of-birth { width: 300px}
         .phone-numbers { width: 300px}
         .department { width: 300px}
+        .search{border: black solid 2px; background-color: darksalmon; padding: 10px; display: flex; gap: 10px; align-items: center}
+        .search > form {display: flex; gap: 10px; align-items: center}
+        .search-field {border: black solid 2px; width: 500px; font-size: 24px}
+        .search-button {padding: 10px; font-size: 24px; background-color: bisque}
     </style>
 </head>
 <body>

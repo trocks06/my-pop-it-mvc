@@ -2,6 +2,10 @@
 
 namespace Controller;
 
+use Model\Department;
+use Model\DepartmentType;
+use Model\Room;
+use Model\RoomType;
 use Model\Role;
 use Model\User;
 use Src\View;
@@ -38,13 +42,38 @@ class Site
 
     public function departments(): string
     {
-        return new View('site.departments');
+        $departments = Department::all();
+        return new View('site.departments', ['departments' => $departments]);
+    }
+
+    public function create_department(Request $request): string
+    {
+        if ($request->method === 'POST' && Department::create($request->all())) {
+            app()->route->redirect('/departments');
+        }
+        $department_types = DepartmentType::all();
+        return (new View())->render('site.create_department', ['department_types' => $department_types]);
+    }
+
+    public function create_department_type(Request $request): string
+    {
+        if ($request->method === 'POST' && DepartmentType::create($request->all())) {
+            app()->route->redirect('/departments');
+        }
+        return (new View())->render('site.create_department_type');
+    }
+
+    public function create_room_type(Request $request): string
+    {
+        if ($request->method === 'POST' && RoomType::create($request->all())) {
+            app()->route->redirect('/rooms');
+        }
+        return (new View())->render('site.create_room_type');
     }
 
     public function users(): string
     {
         $users = User::all();
-        $roles = Role::all();
         return new View('site.users', ['users' => $users]);
     }
 
@@ -83,6 +112,6 @@ class Site
             app()->route->redirect('/users');
         }
         $roles = Role::all();
-        return (new View())->render('site.signup', ['roles' => $roles]);
+        return (new View())->render('site.create_user', ['roles' => $roles]);
     }
 }
