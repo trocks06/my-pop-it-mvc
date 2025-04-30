@@ -2,9 +2,9 @@
 return [
     'driver' => 'mysql',
     'host' => 'localhost',
-    'database' => 'phone_system',
-    'username' => 'root',
-    'password' => '',
+    'database' => 'pxurhary_m5',
+    'username' => 'pxurhary',
+    'password' => 'dE2EPs',
     'charset' => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix' => '',

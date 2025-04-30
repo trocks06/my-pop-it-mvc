@@ -10,7 +10,7 @@
         <select name="role_id">
             <?php
             foreach ($roles as $role) {
-                echo '<option value="' . $role->id . '">' . $role->name . '</option>';
+                echo '<option value="' . $role->id . '">' . $role->role_name . '</option>';
             }
             ?>
         </select>

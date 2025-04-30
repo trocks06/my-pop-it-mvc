@@ -43,7 +43,9 @@ class Site
 
     public function users(): string
     {
-        return new View('site.users');
+        $users = User::all();
+        $roles = Role::all();
+        return new View('site.users', ['users' => $users]);
     }
 
     public function signup(Request $request): string
