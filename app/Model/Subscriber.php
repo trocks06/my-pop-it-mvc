@@ -5,21 +5,23 @@ namespace Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class Subscriber extends Model
 {
     use HasFactory;
-    protected $table = 'room';
+    protected $table = 'subscriber';
     public $timestamps = false;
     protected $fillable = [
-        'room_name',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'birth_date',
         'department_id',
-        'room_type_id',
     ];
 
     protected static function booted()
     {
-        static::created(function ($room) {
-            $room->save();
+        static::created(function ($subscriber) {
+            $subscriber->save();
         });
     }
 
@@ -35,14 +37,12 @@ class Room extends Model
         return $this->id;
     }
 
-    // В models/Room.php
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
-
-    public function roomType()
+    public function phones()
     {
-        return $this->belongsTo(RoomType::class, 'room_type_id');
+        return $this->hasMany(Phone::class);
     }
 }

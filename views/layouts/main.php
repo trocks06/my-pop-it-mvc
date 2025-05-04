@@ -17,23 +17,28 @@
         nav { padding: 0 10px; font-size: 24px;  display: flex; justify-content: space-between }
         a { text-decoration: none; color: black}
         main { font-size: 32px; }
-        .buttons { margin-top: 34px; display: flex; gap: 50px;justify-content: center}
+        .buttons { margin-top: 34px; display: flex; gap: 50px; justify-content: center}
         .buttons-left {display: flex; flex-direction: column; gap: 28px}
         .buttons-right {display: flex; align-items: center; gap: 20px; justify-content: center; margin-top: 34px}
-        .buttons-left > a {text-align: center; width: 472px; border: black solid 2px; padding: 5px; background-color: darksalmon}
-        .buttons-right > a {border: black solid 2px; padding: 5px; background-color: darksalmon}
-        .data {margin-top: 34px; display: flex; flex-direction: column;}
-        .column {display: flex; justify-content: center; }
-        .column > div {  display: flex; justify-content: center; align-items: center; text-align: center; border: black solid 2px; height: 100px; background-color: darksalmon}
+        .buttons-left > a {text-align: center; width: 472px; border: black solid 2px; padding: 5px; background-color: darksalmon;}
+        .buttons-right > a, .count-button {border: black solid 2px; padding: 5px; background-color: darksalmon}
+        .data {margin-top: 34px; display: flex; flex-direction: column; margin-bottom: 34px}
+        .column {display: flex; justify-content: center; height: fit-content}
+        .column > div {  display: flex; justify-content: center; align-items: center; text-align: center; border: black solid 2px; min-height: 100px; background-color: darksalmon}
+        img {border: black solid 2px}
         .id { width: 100px}
         .fio { width: 700px}
         .date-of-birth { width: 300px}
         .phone-numbers { width: 300px}
         .department { width: 300px}
-        .search{border: black solid 2px; background-color: darksalmon; padding: 10px; display: flex; gap: 10px; align-items: center}
+        .search{border: black solid 2px; background-color: darksalmon; padding: 10px; display: flex; gap: 10px; align-items: center; height: 100px}
         .search > form {display: flex; gap: 10px; align-items: center}
         .search-field {border: black solid 2px; width: 500px; font-size: 24px}
         .search-button {padding: 10px; font-size: 24px; background-color: bisque}
+        main > h2, h3 {text-align: center; margin-top: 34px}
+        main > form {margin: 0 auto; margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 20px; justify-content: space-between; width: fit-content;}
+        main > form > label {display: flex; justify-content: space-between; gap: 20px; width: 100%; background-color: burlywood; border: black solid 2px; padding: 10px; align-items: center}
+        main > form > label > input, button, select { padding: 10px; background-color: darksalmon; font-size: 24px; border: black solid 1px}
     </style>
 </head>
 <body>

@@ -33,4 +33,8 @@ class Department extends Model
     {
         return $this->id;
     }
+    public function departmentType()
+    {
+        return $this->belongsTo(DepartmentType::class, 'department_type_id');
+    }
 }

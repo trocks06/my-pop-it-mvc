@@ -1,3 +1,4 @@
+<h2>Подразделения</h2>
 <departments>
     <div class="buttons">
         <div class="buttons-left">
@@ -6,8 +7,8 @@
         </div>
         <div class="search">
             <h4>Поиск</h4>
-            <form>
-                <label><input class="search-field" type="text"></label>
+            <form action="<?= app()->route->getUrl('/departments') ?>">
+                <label><input name="search_field" class="search-field" type="text" value="<?= $request->get('search_field') ?>"></label>
                 <button class="search-button">Найти</button>
             </form>
         </div>
@@ -20,11 +21,13 @@
         </div>
         <?php
         foreach ($departments as $department) {
+            $departmentTypeName = $department->departmentType ? $department->departmentType->type_name : 'Не указано';
+
             echo '
             <div class="column">
                 <div class="id">' . $department->id . '</div>
                 <div class="fio">' . $department->department_name . '</div>
-                <div class="date-of-birth">' . $department->department_type_id . '</div>
+                <div class="date-of-birth">' . $departmentTypeName . '</div>
             </div>';
         }
         ?>

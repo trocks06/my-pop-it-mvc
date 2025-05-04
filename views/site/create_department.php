@@ -1,5 +1,6 @@
+<h2>Создание подразделения</h2>
 <form method="post">
-    <label>Название подразделения <input type="text" name="department_name"></label>
+    <label>Название подразделения <input type="text" name="department_name" value="<?= $old['department_name'] ?? '' ?>"></label>
     <label>Вид подразделения
         <select name="department_type_id">
             <?php
@@ -11,3 +12,14 @@
     </label>
     <button>Добавить подразделение</button>
 </form>
+<?php if (!empty($errors)): ?>
+    <div style="color: red">
+        <ul>
+            <?php foreach ($errors as $field => $fieldErrors): ?>
+                <?php foreach ($fieldErrors as $error): ?>
+                    <li><?= $error ?></li>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>

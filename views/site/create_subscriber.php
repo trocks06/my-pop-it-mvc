@@ -1,21 +1,19 @@
-<h2>Создание сисадмина</h2>
-<form method="post" enctype="multipart/form-data">
+<h2>Создание абонента</h2>
+<form method="post">
     <label>Фамилия <input type="text" name="last_name" value="<?= $old['last_name'] ?? '' ?>"></label>
     <label>Имя <input type="text" name="first_name" value="<?= $old['first_name'] ?? '' ?>"></label>
     <label>Отчество <input type="text" name="middle_name" value="<?= $old['middle_name'] ?? '' ?>"></label>
-    <label>Логин <input type="text" name="login" value="<?= $old['login'] ?? '' ?>"></label>
-    <label>Пароль <input type="password" name="password"></label>
-    <label>Аватар<input type="file" name="avatar"></label>
-    <label>Роль
-        <select name="role_id">
+    <label>Дата рождения <input type="date" name="birth_date" value="<?= $old['birth_date'] ?? '' ?>"></label>
+    <label>Подразделение
+        <select name="department_id">
             <?php
-            foreach ($roles as $role) {
-                echo '<option value="' . $role->id . '">' . $role->role_name . '</option>';
+            foreach ($departments as $department) {
+                echo '<option value="' . $department->id . '">' . $department->department_name . '</option>';
             }
             ?>
         </select>
     </label>
-    <button>Добавить сисадмина</button>
+    <button>Добавить абонента</button>
 </form>
 <?php if (!empty($errors)): ?>
     <div style="color: red">

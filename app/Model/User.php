@@ -17,6 +17,7 @@ class User extends Model implements IdentityInterface
         'middle_name',
         'login',
         'password',
+        'avatar',
         'role_id',
     ];
 
@@ -46,4 +47,36 @@ class User extends Model implements IdentityInterface
         return self::where(['login' => $credentials['login'],
             'password' => md5($credentials['password'])])->first();
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function uploadAvatar(array $file): ?string
+    {
+        if ($file['name'] == "") {
+            return 'public/uploads/avatars/default_avatar.jpg';
+        }
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        $fileTmpPath = $file['tmp_name'];
+        $fileName = $file['name'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+
+        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        if (!in_array($fileExtension, $allowedExtensions)) {
+            return null;
+        }
+        $fullPath = 'uploads/avatars/' . $newFileName;
+        move_uploaded_file($fileTmpPath, $fullPath);
+        return 'public/' . $fullPath;
+    }
+
 }
