@@ -5,7 +5,20 @@
             <div class="id">ID</div>
             <div class="fio">ФИО</div>
             <div class="date-of-birth">Дата рождения</div>
-            <div class="fio">Номера телефонов</div>
+            <div class="fio" style="display: inline-flex; justify-content: space-evenly">Номера телефонов
+            <form method="get" id="dep-filter" action="<?= app()->route->getUrl('/subscriber/' . $subscriber->id) ?>">
+                <label for="dep" style="font-size: 24px">По подразделениям</label><br>
+                    <select id="dep" name="department_id" onchange="document.getElementById('dep-filter').submit()">
+                        <option value="">Все подразделения</option>
+                        <?php foreach ($departments as $department): ?>
+                            <option value="<?= $department->id ?>" <?= $selectedDepartment == $department->id ? 'selected' : '' ?>>
+                                <?= $department->department_name ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+            </form>
+            </div>
             <div class="department">Подразделение</div>
         </div>
         <div class="column">

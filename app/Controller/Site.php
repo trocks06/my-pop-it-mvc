@@ -28,15 +28,31 @@ class Site
         return new View('site.hello', ['message' => 'Главная страница Внутренней телефонной связи :)']);
     }
 
-    public function subscriber($id): string
+    public function subscriber($id, Request $request): string
     {
+        $selectedDepartment = $request->get('department_id');
         $subscriber = Subscriber::find($id);
-        $phones = Phone::where('subscriber_id', $id)->get();
+        $departments = Department::all();
+        $phonesQuery = Phone::where('subscriber_id', $id);
 
-        $depatmentName = Department::find($subscriber->department_id)->department_name;
+        if ($selectedDepartment) {
+            $phonesQuery->whereHas('room', function($query) use ($selectedDepartment) {
+                $query->where('department_id', $selectedDepartment);
+            });
+        }
 
-        return new View('site.subscriber', ['subscriber' => $subscriber, 'departmentName' => $depatmentName, 'phones' => $phones]);
+        $phones = $phonesQuery->get();
+
+        $departmentName = Department::find($subscriber->department_id)->department_name;
+
+        return new View('site.subscriber', ['subscriber' => $subscriber, 'departmentName' => $departmentName, 'phones' => $phones, 'departments' => $departments, 'selectedDepartment' => $selectedDepartment]);
     }
+
+//if ($roomId) {
+//$query->whereHas('phones', function($q) use ($roomId) {
+//                    $q->where('room_id', $roomId);
+//                });
+//}
 
     public function subscribers(Request $request): string
     {
