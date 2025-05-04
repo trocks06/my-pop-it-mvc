@@ -1,5 +1,6 @@
 <h2>Создание подразделения</h2>
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label>Название подразделения <input type="text" name="department_name" value="<?= $old['department_name'] ?? '' ?>"></label>
     <label>Вид подразделения
         <select name="department_type_id">

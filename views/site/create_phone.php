@@ -1,5 +1,6 @@
 <h2>Создание телефона</h2>
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label>Номер телефона <input type="text" name="phone_number" value="<?= $old['phone_number'] ?? '' ?>"></label>
     <label>Абонент
         <select name="subscriber_id">

@@ -1,5 +1,6 @@
 <h2>Создание помещения</h2>
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label>Название помещения <input type="text" name="room_name" value="<?= $old['room_name'] ?? '' ?>"></label>
     <label>Подразделение
         <select name="department_id">

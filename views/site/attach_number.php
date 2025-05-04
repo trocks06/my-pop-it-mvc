@@ -1,4 +1,5 @@
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label>Абонент
         <select name="subscriber_id">
             <?php

@@ -1,5 +1,6 @@
 <h2>Создание абонента</h2>
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label>Фамилия <input type="text" name="last_name" value="<?= $old['last_name'] ?? '' ?>"></label>
     <label>Имя <input type="text" name="first_name" value="<?= $old['first_name'] ?? '' ?>"></label>
     <label>Отчество <input type="text" name="middle_name" value="<?= $old['middle_name'] ?? '' ?>"></label>

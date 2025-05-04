@@ -1,5 +1,6 @@
 <h2>Создание типа подразделения</h2>
 <form method="post">
+    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
     <label>Название вида подразделения <input type="text" name="type_name" value="<?= $old['type_name'] ?? '' ?>"></label>
     <button>Добавить вид подразделения</button>
 </form>
