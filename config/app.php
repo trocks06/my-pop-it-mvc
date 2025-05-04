@@ -10,9 +10,9 @@ return [
         'admin' => \Middlewares\AdminMiddleware::class,
     ],
     'validators' => [
-        'required' => \Validators\RequireValidator::class,
-        'unique' => \Validators\UniqueValidator::class,
-        'password' => \Validators\PasswordValidator::class,
+        'required' => \trocks06\Validators\Validators\RequireValidator::class,
+        'unique' => \trocks06\Validators\Validators\UniqueValidator::class,
+        'password' => \trocks06\Validators\Validators\PasswordValidator::class,
         'avatar' => \Validators\AvatarValidator::class,
         'birth_date' => \Validators\BirthDateValidator::class,
         'full_name' => \Validators\UniqueFullNameValidator::class,

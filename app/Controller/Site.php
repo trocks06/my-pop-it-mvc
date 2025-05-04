@@ -317,7 +317,7 @@ class Site
             ]);
 
             if ($validator->fails()) {
-                return new View('site.create_user', [
+                return new View('site.signup', [
                     'errors' => $validator->errors(),
                     'roles' => $roles,
                     'old' => $request->all()
