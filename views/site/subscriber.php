@@ -37,6 +37,6 @@
                 ?>
             </div>
             <div class="department"><?= $departmentName ?></div>
-        </div>;
+        </div>
     </div>
 </subscriber>

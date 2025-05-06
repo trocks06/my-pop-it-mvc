@@ -78,5 +78,4 @@ class User extends Model implements IdentityInterface
         move_uploaded_file($fileTmpPath, $fullPath);
         return 'public/' . $fullPath;
     }
-
 }

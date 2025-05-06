@@ -228,11 +228,10 @@ class Site
 
         if ($request->method === 'POST') {
             $validator = new Validator($request->all(), [
-                'phone_number' => ['required', 'unique:phone,phone_number', 'phone'],
+                'phone_number' => ['required', 'phone'],
                 'room_id' => ['required'],
             ], [
                 'required' => 'Поле :field обязательно для заполнения',
-                'unique' => 'Пользователь с таким логином уже существует',
                 'phone' => 'Поле :field должно содержать корректный номер телефона, пример: +7(999)123-45-67'
             ]);
 
