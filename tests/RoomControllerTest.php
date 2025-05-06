@@ -1,81 +1,164 @@
 <?php
+
+use Controller\RoomController;
 use PHPUnit\Framework\TestCase;
 use Model\Room;
-use Model\Department;
 use Model\RoomType;
+use Model\Department;
+use Src\Validator;
+use Src\View;
+use Src\Request;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class RoomControllerTest extends TestCase
 {
-    public function testSignup(string $httpMethod, array $roomData, string $message): void
-    {
-        //Выбираем занятый логин из базы данных
-        if ($roomData['room_name'] === 'existing_room') {
-            Room::create([
-                'room_name' => 'Конференц-зал 101',
-                'department_id' => 1,
-                'room_type_id' => 1
-            ]);
-        }
-
-        // Создаем заглушку для класса Request.
-        $request = $this->createMock(\Src\Request::class);
-        // Переопределяем метод all() и свойство method
-        $request->expects($this->any())
-            ->method('all')
-            ->willReturn($roomData);
-        $request->method = $httpMethod;
-
-        //Сохраняем результат работы метода в переменную
-        $result = (new \Controller\RoomController())->create_room($request);
-
-        if (!empty($result)) {
-            //Проверяем варианты с ошибками валидации
-            $message = '/' . preg_quote($message, '/') . '/';
-            $this->expectOutputRegex($message);
-            return;
-        }
-
-        //Проверяем добавился ли пользователь в базу данных
-        $this->assertTrue((bool)Room::where('room_name', $roomData['room_name'])->count());
-        //Удаляем созданного пользователя из базы данных
-        Room::where('room_name', $roomData['room_name'])->delete();
-
-    }
-
     protected function setUp(): void
     {
-        //Установка переменной среды
-        $_SERVER['DOCUMENT_ROOT'] = '/var/www';
+        $capsule = new Capsule;
 
-   //Создаем экземпляр приложения
-   $GLOBALS['app'] = new Src\Application(new Src\Settings([
-       'app' => include $_SERVER['DOCUMENT_ROOT'] . '/config/app.php',
-       'db' => include $_SERVER['DOCUMENT_ROOT'] . '/config/db.php',
-       'path' => include $_SERVER['DOCUMENT_ROOT'] . '/config/path.php',
-   ]));
+        $capsule->addConnection([
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'database' => 'pxurhary_m5',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+        ]);
 
-   //Глобальная функция для доступа к объекту приложения
-   if (!function_exists('app')) {
-       function app()
-       {
-           return $GLOBALS['app'];
-       }
-   }
-}
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+        $this->initDatabase();
+    }
 
-//Метод, возвращающий набор тестовых данных
-    public function additionProvider(): array
+    protected function tearDown(): void
     {
-        return [
-            ['POST', ['room_name' => 'Конференц-зал 101', 'department_id' => '1', 'room_type_id' => '1'],
-                '<h3></h3>'
-            ],
-            ['POST', ['room_name' => '', 'department_id' => '1', 'room_type_id' => '1'],
-                '<h3></h3>',
-            ],
-            ['POST', ['room_name' => 'Конференц-зал 101', 'department_id' => '1', 'room_type_id' => '1'],
-                '<h3>{"login":["Поле login должно быть уникально"]}</h3>',
-            ],
+        // Очистка базы данных после тестов
+        $this->resetDatabase();
+    }
+
+    private function initDatabase()
+    {
+        RoomType::create(['type_name' => 'Конференц-зал']);
+        Department::create(['department_name' => 'IT отдел', 'department_type_id' => '1']);
+    }
+
+    private function resetDatabase()
+    {
+        Room::where('room_name', 'Конференц-зал 101')->delete();
+        RoomType::where(['type_name' => 'Конференц-зал'])->delete();
+        Department::where(['department_name' => 'IT отдел'])->delete();
+    }
+
+    /**
+     * Тест #1: Проверка успешного создания помещения (TC_FUNC_1)
+     */
+    public function testSuccessfulRoomCreation()
+    {
+        $roomType = RoomType::where(['type_name' => 'Конференц-зал'])->first();
+        $department = Department::where(['department_name' => 'IT отдел'])->first();
+        $request = new Request();
+        $request->method = 'POST';
+        $request->all = [
+            'room_name' => 'Конференц-зал 101',
+            'department_id' => $department->id,
+            'room_type_id' => $roomType->id,
         ];
+
+        // Вызов тестируемой функции
+        $controller = new RoomController();
+        $response = $controller->create_room($request);
+
+        // Проверки
+        $this->assertInstanceOf(\App\Core\RedirectResponse::class, $response);
+        $this->assertEquals('/rooms', $response->getTargetUrl());
+
+        // Проверка, что помещение создано в базе
+        $room = Room::where('room_name', 'Конференц-зал 101')->first();
+        $this->assertNotNull($room);
+        $this->assertEquals('Конференц-зал 101', $room->room_name);
+        $this->assertEquals($department->id, $room->department_id);
+        $this->assertEquals($roomType->id, $room->room_type_id);
+    }
+
+    /**
+     * Тест #2: Проверка валидации обязательных полей (TC_FUNC_2)
+     */
+    public function testValidationForRequiredFields()
+    {
+        // Подготовка тестовых данных
+        $request = new Request();
+        $request->method = 'POST';
+        $request->all = [
+            'room_name' => '',
+            'department_id' => '',
+            'room_type_id' => ''
+        ];
+
+        // Вызов тестируемой функции
+        $controller = new RoomController();
+        $response = $controller->create_room($request);
+
+        // Проверки
+        $this->assertInstanceOf(View::class, $response);
+
+        // Получаем ошибки из ответа
+        $errors = $response->getData()['errors'] ?? null;
+        $this->assertNotNull($errors);
+
+        // Проверяем наличие ошибок для каждого обязательного поля
+        $this->assertTrue($errors->has('room_name'));
+        $this->assertEquals('Поле room_name обязательно для заполнения', $errors->first('room_name'));
+
+        $this->assertTrue($errors->has('department_id'));
+        $this->assertEquals('Поле department_id обязательно для заполнения', $errors->first('department_id'));
+
+        $this->assertTrue($errors->has('room_type_id'));
+        $this->assertEquals('Поле room_type_id обязательно для заполнения', $errors->first('room_type_id'));
+
+        // Проверка, что помещение не создано
+        $count = Room::count();
+        $this->assertEquals(0, $count);
+    }
+
+    /**
+     * Тест #3: Проверка уникальности названия помещения (TC_FUNC_3)
+     */
+    public function testUniqueRoomNameValidation()
+    {
+        // Сначала создаем помещение с таким именем
+        Room::create([
+            'room_name' => 'Конференц-зал 101',
+            'department_id' => 1,
+            'room_type_id' => 1
+        ]);
+
+        // Подготовка тестовых данных
+        $request = new Request();
+        $request->method = 'POST';
+        $request->all = [
+            'room_name' => 'Конференц-зал 101',
+            'department_id' => 1,
+            'room_type_id' => 1
+        ];
+// Вызов тестируемой функции
+        $controller = new RoomController();
+        $response = $controller->create_room($request);
+
+        // Проверки
+        $this->assertInstanceOf(View::class, $response);
+
+        // Получаем ошибки из ответа
+        $errors = $response->getData()['errors'] ?? null;
+        $this->assertNotNull($errors);
+
+        // Проверяем наличие ошибки уникальности
+        $this->assertTrue($errors->has('room_name'));
+        $this->assertEquals('Помещение с таким названием уже существует', $errors->first('room_name'));
+
+        // Проверка, что новое помещение не создано
+        $count = Room::where('room_name', 'Конференц-зал 101')->count();
+        $this->assertEquals(1, $count); // Должна остаться только одна запись
     }
 }
