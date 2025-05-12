@@ -2,7 +2,7 @@
 return [
     'driver' => 'mysql',
     'host' => 'localhost',
-    'database' => 'pxurhary_m3',
+    'database' => 'pxurhary_m5',
     'username' => 'pxurhary',
     'password' => 'dE2EPs',
     'charset' => 'utf8',
